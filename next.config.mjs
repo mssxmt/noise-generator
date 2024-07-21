@@ -1,4 +1,4 @@
-const { createVanillaExtractPlugin } = require('@vanilla-extract/babel-plugin');
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
