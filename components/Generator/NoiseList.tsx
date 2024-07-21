@@ -1,7 +1,5 @@
 'use client';
 import { NoiseType } from '@/utils/noiseGenerators';
-import { selectBox, options } from './listStyle.css';
-import { useState } from 'react';
 
 type Props = {
   noiseType: NoiseType;
@@ -24,10 +22,9 @@ const NoiseList: React.FC<Props> = ({ noiseType, setNoiseType }) => {
     <select
       value={noiseType}
       onChange={(e) => setNoiseType(e.target.value as NoiseType)}
-      className={selectBox}
     >
       {noiseOptions.map((option) => (
-        <option key={option.value} value={option.value} className={options}>
+        <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}

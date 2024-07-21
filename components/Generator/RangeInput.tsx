@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { rangeInput, rangeLabel } from './rangeInput.css';
 
 type Props = {
   as: 'Duration' | 'Volume';
@@ -23,7 +22,7 @@ const RangeInputComponent: React.FC<Props> = ({
   step,
 }) => {
   return (
-    <label className={rangeLabel}>
+    <label>
       {label}: {value}
       {as === 'Duration' && 's'}
       <input
@@ -33,7 +32,6 @@ const RangeInputComponent: React.FC<Props> = ({
         step={step}
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
-        className={rangeInput}
       />
     </label>
   );
