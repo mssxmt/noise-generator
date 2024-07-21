@@ -1,7 +1,4 @@
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
-const withVanillaExtract = createVanillaExtractPlugin();
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
-const consfig = withVanillaExtract(nextConfig);
+const consfig = nextConfig;
 export default consfig;
