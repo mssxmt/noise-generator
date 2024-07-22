@@ -1,6 +1,64 @@
 'use client';
 
+import { css } from '@kuma-ui/core';
 import React from 'react';
+
+const rangeInput = css`
+  appearance: none;
+  width: 100%;
+  height: 80px;
+  border-radius: 1rem;
+  background-color: transparent; // t('colors.grey.light1')
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: t('colors.shadow');
+
+  &:hover {
+    box-shadow: t('colors.shadowHover');
+  }
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 70px;
+    border-radius: 4px;
+    background-color: t('colors.grey.dark');
+    cursor: grab;
+    transition: all 0.3s ease;
+    box-shadow: t('colors.shadow');
+
+    &:hover {
+      background-color: t('colors.primary.default');
+      transform: scale(1.1);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: t('colors.grey.dark');
+    cursor: grab;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: t('colors.primary.default');
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const rangeLabel = css`
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: t('colors.grey.dark');
+  &:hover {
+    color: t('colors.primary.default');
+  }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
 
 type Props = {
   as: 'Duration' | 'Volume';
@@ -22,8 +80,8 @@ const RangeInputComponent: React.FC<Props> = ({
   step,
 }) => {
   return (
-    <label>
-      {label}: {value}
+    <label className={rangeLabel}>
+      {label}: {as === 'Duration' ? value : value * 100}
       {as === 'Duration' && 's'}
       <input
         type='range'
@@ -32,6 +90,7 @@ const RangeInputComponent: React.FC<Props> = ({
         step={step}
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
+        className={rangeInput}
       />
     </label>
   );
