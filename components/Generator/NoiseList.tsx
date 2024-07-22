@@ -7,14 +7,14 @@ type Props = {
 };
 
 const noiseOptions: { value: NoiseType; label: string }[] = [
-  { value: 'white', label: 'ホワイトノイズ' },
-  { value: 'pink', label: 'ピンクノイズ' },
-  { value: 'brown', label: 'ブラウンノイズ' },
-  { value: 'perlin', label: 'パーリンノイズ' },
-  { value: 'crackle', label: 'クラックルノイズ' },
-  { value: 'square', label: 'スクエアノイズ' },
-  { value: 'plus', label: 'サインノイズ' },
-  { value: 'sawtooth', label: 'サウドノイズ' },
+  { value: 'white', label: 'white' },
+  { value: 'pink', label: 'pink' },
+  { value: 'brown', label: 'brown' },
+  { value: 'perlin', label: 'perlin' },
+  { value: 'crackle', label: 'crackle' },
+  { value: 'square', label: 'square' },
+  { value: 'plus', label: 'plus' },
+  { value: 'sawtooth', label: 'sawtooth' },
 ];
 
 const NoiseList: React.FC<Props> = ({ noiseType, setNoiseType }) => {
