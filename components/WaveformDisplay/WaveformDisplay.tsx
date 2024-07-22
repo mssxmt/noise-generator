@@ -7,6 +7,7 @@ interface WaveformDisplayProps {
   sampleRate: number; // サンプルレート
   isPlaying: boolean; // 再生中かどうか
   volume: number; // 音量
+  displayChecked: boolean;
 }
 
 // WaveformDisplay コンポーネントの定義
@@ -15,6 +16,7 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   sampleRate,
   isPlaying,
   volume,
+  displayChecked,
 }) => {
   // canvas 要素の参照を保持するための ref を作成
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -129,7 +131,15 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: '100px', height: '200px', backgroundColor: '#f0f0f0' }}
+      style={{
+        position: displayChecked ? 'absolute' : 'relative',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        zIndex: '-1',
+        transition: 'all 0.3s ease',
+      }}
     />
   );
 };
