@@ -1,62 +1,63 @@
-/**
- * ストレージマネージャー
- *
- * このモジュールは生成されたノイズデータの保存と取得を管理します。
- */
-
+// /**
+//  * ストレージマネージャー
+//  *
+//  * このモジュールは生成されたノイズデータの保存と取得を管理します。
+//  */
+import Dexie from 'dexie';
 import { NoiseType, NoiseOptions } from './noiseGenerators';
 
-// 保存されるノイズデータの型
 export type StoredNoise = {
   id: string;
   type: NoiseType;
   options: NoiseOptions;
-  data: number[]; // Float32Arrayは直接JSONに変換できないため、numberの配列として保存
+  data: number[];
+  createdAt: Date;
 };
 
-const STORAGE_KEY = 'storedNoises';
+class NoiseDatabase extends Dexie {
+  noises!: Dexie.Table<StoredNoise, string>;
+
+  constructor() {
+    super('NoiseDatabase');
+    this.version(1).stores({
+      noises: '++id, type, createdAt',
+    });
+  }
+}
+
+const db = new NoiseDatabase();
+
 const MAX_STORED_NOISES = 16;
 
-/**
- * 生成されたノイズをローカルストレージに保存します。
- */
-export const saveNoise = (noise: Omit<StoredNoise, 'id'>): StoredNoise => {
-  const storedNoises = getStoredNoises();
+export const saveNoise = async (
+  noise: Omit<StoredNoise, 'id' | 'createdAt'>
+): Promise<StoredNoise> => {
+  const newNoise: StoredNoise = {
+    ...noise,
+    createdAt: new Date(),
+    id: Date.now().toString(),
+  };
 
-  // 新しいIDを生成
-  const id = Date.now().toString();
-  const newNoise: StoredNoise = { ...noise, id };
-
-  // 最大数を超える場合は古いものを削除
-  if (storedNoises.length >= MAX_STORED_NOISES) {
-    storedNoises.shift();
+  const count = await db.noises.count();
+  if (count >= MAX_STORED_NOISES) {
+    const oldestNoise = await db.noises.orderBy('createdAt').first();
+    if (oldestNoise && oldestNoise.id) {
+      await db.noises.delete(oldestNoise.id);
+    }
   }
 
-  storedNoises.push(newNoise);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(storedNoises));
-
-  return newNoise;
+  const id = await db.noises.add(newNoise);
+  return { ...newNoise };
 };
 
-/**
- * 保存されたノイズの一覧を取得します。
- */
-export const getStoredNoises = (): StoredNoise[] => {
-  const storedData = localStorage.getItem(STORAGE_KEY);
-  return storedData ? JSON.parse(storedData) : [];
+export const getStoredNoises = async (): Promise<StoredNoise[]> => {
+  return await db.noises.orderBy('createdAt').reverse().toArray();
 };
 
-/**
- * 指定されたIDのノイズを削除します。
- */
-export const deleteNoise = (id: string): void => {
-  const storedNoises = getStoredNoises().filter((noise) => noise.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(storedNoises));
+export const deleteNoise = async (id: string): Promise<void> => {
+  await db.noises.delete(id);
 };
 
-/**
- * 保存されたすべてのノイズを削除します。
- */
-export const clearAllNoises = (): void => {
-  localStorage.removeItem(STORAGE_KEY);
+export const clearAllNoises = async (): Promise<void> => {
+  await db.noises.clear();
 };
