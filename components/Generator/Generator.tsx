@@ -45,8 +45,19 @@ export const Generator: React.FC = () => {
   const [storedNoises, setStoredNoises] =
     useState<StoredNoise[]>(initialStoredNoises); //表示用のstate
   const [audioData, setAudioData] = useState<Float32Array | null>(null);
+const [displayChecked, setDiscplayChecked] = useState(false);
 
-  const handleGenerateAndPlay = useCallback(() => {
+  const loadInitialStoredNoises = async () => {
+    const initialStoredNoises = await getStoredNoises();
+    setStoredNoises(initialStoredNoises);
+  };
+
+  useEffect(() => {
+    loadInitialStoredNoises();
+  }, []);
+
+  const handleGenerateAndPlay = useCallback(
+    async ({ isPreview }: { isPreview: boolean }) => {
     const options: NoiseOptions = {
       duration,
       sampleRate: 44100,
@@ -65,7 +76,7 @@ export const Generator: React.FC = () => {
     }, duration * 1000);
 
     // ノイズを保存
-    const savedNoise = saveNoise({
+        const savedNoise = await saveNoise({
       type: noiseType,
       options,
       data: Array.from(noiseData), // Float32Arrayを通常の配列に変換
@@ -80,8 +91,8 @@ export const Generator: React.FC = () => {
   }, []);
 
   const handleDeleteNoise = useCallback(
-    (id: string) => {
-      deleteNoise(id);
+    async (id: string) => {
+      await deleteNoise(id);
       const updatedNoises = storedNoises.filter((noise) => noise.id !== id);
       setStoredNoises(updatedNoises);
     },
