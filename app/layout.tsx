@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-
+import { KumaRegistry } from '@kuma-ui/next-plugin/registry';
+import { ThemeProvider } from '@/providers/NextThmesProvider';
+import { Header } from '@/components/Header';
+import { ThemeToggle } from '@/components/ThemeToggle';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -16,7 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={inter.className}>{children}</body>
+      <body className={exanRegular.variable}>
+        <ThemeProvider attribute='data-theme'>
+          <Header>
+            <ThemeToggle />
+          </Header>
+          <KumaRegistry>{children}</KumaRegistry>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
