@@ -17,24 +17,27 @@ import WaveformDisplay from '../WaveformDisplay/WaveformDisplay';
 import DownloadManager from '../DownloadManager/DownloadManager';
 import NoiseList from './NoiseList';
 import RangeInputComponent from './RangeInput';
-const keyMapping = [
-  'a',
-  'w',
-  's',
-  'e',
-  'd',
-  'f',
-  't',
-  'g',
-  'y',
-  'h',
-  'u',
-  'j',
-  'k',
-  'o',
-  'l',
-  'p',
-];
+import { css } from '@kuma-ui/core';
+import { ControlButtons } from './ControlButtons';
+import { SavedList } from './SavedList';
+import { ToggleSwitch } from '../ToggleSwitchComponent';
+import { DeleteAll } from './DeleteAll';
+import { keyMapping } from '@/utils/keyMappting';
+
+const Label = css`
+  border: none;
+  width: fit-content;
+  height: 2rem;
+  border-radius: 1rem;
+  color: t('colors.grey.dark');
+  background-color: transparent; //t('colors.grey.light1');
+  padding: 8px 16px;
+  box-shadow: t('colors.shadowHover');
+  color: t('colors.primary.primary');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const Generator: React.FC = () => {
   const initialStoredNoises = getStoredNoises();
@@ -184,6 +187,20 @@ const [displayChecked, setDiscplayChecked] = useState(false);
         }}
       >
       <DownloadManager noiseFiles={storedNoises} />
+        <ToggleSwitch
+          checked={displayChecked}
+          setChecked={setDiscplayChecked}
+        />
+      </div>
+      <div
+        style={{
+          width: '100%',
+          aspectRatio: '2 / 1',
+          backgroundColor: 'transparent',
+          boxShadow: displayChecked ? 'none' : 'var(--var-shadow)',
+          borderRadius: '1rem',
+        }}
+      >
       {audioData && (
         <WaveformDisplay
           audioData={audioData}
@@ -193,5 +210,6 @@ const [displayChecked, setDiscplayChecked] = useState(false);
         />
       )}
     </div>
+    </section>
   );
 };
