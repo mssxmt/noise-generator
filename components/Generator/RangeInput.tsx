@@ -81,8 +81,8 @@ const RangeInputComponent: React.FC<Props> = ({
 }) => {
   return (
     <label className={rangeLabel}>
-      {label}: {as === 'Duration' ? value : value * 100}
-      {as === 'Duration' && 's'}
+      {label}: {parseFloat((value * 100).toFixed(0))}
+      {as === 'Duration' && ' ms'}
       <input
         type='range'
         min={min}
