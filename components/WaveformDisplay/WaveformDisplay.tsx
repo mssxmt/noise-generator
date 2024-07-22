@@ -73,13 +73,17 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
       const height = canvas.height;
       newAnalyser.getByteTimeDomainData(dataArray);
 
+      const rootStyles = getComputedStyle(document.documentElement);
+      const fillColor = rootStyles.getPropertyValue('--greyLight-1');
+      const strokeColor = rootStyles.getPropertyValue('--greyDark');
+
       // canvas をクリア
-      ctx.fillStyle = 'rgb(255, 255, 255)';
+      ctx.fillStyle = fillColor;
       ctx.fillRect(0, 0, width, height);
 
       // 波形を描画
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgb(0, 0, 0)';
+      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = strokeColor;
       ctx.beginPath();
 
       const sliceWidth = (width * 1.0) / bufferLength;
