@@ -42,8 +42,7 @@ export const Generator: React.FC = () => {
   const [duration, setDuration] = useState(1);
   const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [storedNoises, setStoredNoises] =
-    useState<StoredNoise[]>(initialStoredNoises); //表示用のstate
+  const [storedNoises, setStoredNoises] = useState<StoredNoise[]>([]); //表示用のstate
   const [audioData, setAudioData] = useState<Float32Array | null>(null);
 const [displayChecked, setDiscplayChecked] = useState(false);
 
@@ -66,6 +65,7 @@ const [displayChecked, setDiscplayChecked] = useState(false);
 
     const noiseData = generateNoise(noiseType, options);
 
+      if (isPreview) {
     setIsPlaying(true);
     const stopPlayback = playAudio(noiseData, volume);
 
@@ -74,7 +74,9 @@ const [displayChecked, setDiscplayChecked] = useState(false);
       setIsPlaying(false);
       stopPlayback();
     }, duration * 1000);
+      }
 
+      if (!isPreview) {
     // ノイズを保存
         const savedNoise = await saveNoise({
       type: noiseType,
@@ -82,8 +84,13 @@ const [displayChecked, setDiscplayChecked] = useState(false);
       data: Array.from(noiseData), // Float32Arrayを通常の配列に変換
     });
     // stateの配列に加える
+        if (storedNoises.length <= 16) {
     setStoredNoises((prevNoises) => [...prevNoises, savedNoise]);
-  }, [noiseType, duration, volume]);
+        }
+      }
+    },
+    [duration, volume, noiseType, storedNoises.length]
+  );
 
   const handleStop = useCallback(() => {
     stopAudio();
