@@ -41,7 +41,7 @@ const Label = css`
 
 export const Generator: React.FC = () => {
   const [noiseType, setNoiseType] = useState<NoiseType>('white');
-  const [duration, setDuration] = useState(1);
+  const [duration, setDuration] = useState(0.5);
   const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedNoises, setStoredNoises] = useState<StoredNoise[]>([]); //表示用のstate
@@ -147,9 +147,9 @@ export const Generator: React.FC = () => {
           label='Duration'
           value={duration}
           setValue={setDuration}
-          min={0.05}
+          min={0.01}
           max={3}
-          step={0.05}
+          step={0.01}
         />
       </div>
       <div>
