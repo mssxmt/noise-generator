@@ -1,5 +1,6 @@
 'use client';
 import { NoiseType } from '@/utils/noiseGenerators';
+import { css } from '@kuma-ui/core';
 
 type Props = {
   noiseType: NoiseType;
@@ -17,9 +18,34 @@ const noiseOptions: { value: NoiseType; label: string }[] = [
   { value: 'sawtooth', label: 'sawtooth' },
 ];
 
+const Select = css`
+  appearance: none;
+  outline: none;
+  border: none;
+  width: 15rem;
+  height: 4rem;
+  border-radius: 1rem;
+  box-shadow: t('colors.shadow');
+  background-color: transparent; //t('colors.grey.light1');
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-align: center;
+
+  color: t('colors.grey.dark');
+  &:hover {
+    color: t('colors.primary.default');
+    box-shadow: t('colors.shadowHover');
+  }
+  &:active {
+    box-shadow: t('colors.innerShadow');
+  }
+`;
+
 const NoiseList: React.FC<Props> = ({ noiseType, setNoiseType }) => {
   return (
     <select
+      className={Select}
       value={noiseType}
       onChange={(e) => setNoiseType(e.target.value as NoiseType)}
     >
