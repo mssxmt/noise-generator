@@ -123,10 +123,15 @@ const [displayChecked, setDiscplayChecked] = useState(false);
   }, [handleKeyPress]);
 
   return (
-    <div>
-      <h2>ノイズジェネレーター</h2>
+    <section style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
       <NoiseList noiseType={noiseType} setNoiseType={setNoiseType} />
-
+<ControlButtons
+          isPlaying={isPlaying}
+          handleGenerateAndPlay={handleGenerateAndPlay}
+          handleStop={handleStop}
+        />
+      </div>
       <div>
         <RangeInputComponent
           as='Duration'
@@ -149,22 +154,28 @@ const [displayChecked, setDiscplayChecked] = useState(false);
           step={0.1}
         />
       </div>
-      {isPlaying ? (
-        <button onClick={handleStop}>停止</button>
-      ) : (
-        <button onClick={handleGenerateAndPlay}>生成して再生</button>
-      )}
-
-      <h3>保存されたノイズ</h3>
-      <ul>
-        {storedNoises.map((noise) => (
-          <li key={noise.id}>
-            {noise.type} - {noise.options.duration}s
-            <button onClick={() => handlePlayStored(noise)}>再生</button>
-            <button onClick={() => handleDeleteNoise(noise.id)}>削除</button>
-          </li>
-        ))}
-      </ul>
+      <section
+        style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+      >
+        <h3 className={Label}>SAVED SOUND(S)</h3>
+        <SavedList
+          storedNoises={storedNoises}
+          handlePlayStored={handlePlayStored}
+          handleDeleteNoise={handleDeleteNoise}
+          keyMapping={keyMapping}
+        />
+        <DeleteAll
+          storedNoises={storedNoises}
+          setStoredNoises={setStoredNoises}
+        />
+      </section>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
       <DownloadManager noiseFiles={storedNoises} />
       {audioData && (
         <WaveformDisplay
