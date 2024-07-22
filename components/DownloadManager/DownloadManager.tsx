@@ -36,8 +36,13 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ noiseFiles }) => {
 
   return (
     <div>
-      <button onClick={handleDownload} disabled={noiseFiles.length === 0}>
-        Download All Noise Files
+      <button
+        onClick={() => handleDownload({ noiseFiles })}
+        disabled={noiseFiles.length === 0}
+        className={Button}
+      >
+        Download All WAV Files
+        <IconArrowDownToArc size={16} />
       </button>
     </div>
   );
