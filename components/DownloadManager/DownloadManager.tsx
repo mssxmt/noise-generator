@@ -1,9 +1,7 @@
 import { StoredNoise } from '@/utils/storageManager';
-import { createZip, downloadZip } from '@/utils/zipManager';
-import {
-  createWavFile,
-  numberArrayToFloat32Array,
-} from '@/utils/wavfileGenerator';
+import { css } from '@kuma-ui/core';
+import { handleDownload } from '@/utils/handleDownload';
+import { IconArrowDownToArc } from '@tabler/icons-react';
 
 type DownloadManagerProps = {
   noiseFiles: StoredNoise[];
@@ -41,30 +39,6 @@ const Button = css`
 `;
 
 const DownloadManager: React.FC<DownloadManagerProps> = ({ noiseFiles }) => {
-  const handleDownload = async () => {
-    if (noiseFiles.length === 0) {
-      alert('No noise files to download');
-      return;
-    }
-
-    const files = noiseFiles.map((file) => {
-      const audioData = numberArrayToFloat32Array(file.data);
-      const wavBlob = createWavFile(audioData, file.options.sampleRate);
-      return {
-        name: `${file.type}_${file.id}.wav`,
-        data: wavBlob,
-      };
-    });
-
-    try {
-      const zipBlob = await createZip(files);
-      downloadZip(zipBlob, 'noise_files.zip');
-    } catch (error) {
-      console.error('Error creating zip file:', error);
-      alert('Failed to create zip file');
-    }
-  };
-
   return (
     <div>
       <button
