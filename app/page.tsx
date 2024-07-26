@@ -18,7 +18,7 @@ const Section = css`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 80px 0;
+  padding: 0 0 80px;
 `;
 export default function Home() {
   return (
