@@ -22,12 +22,25 @@ const Div = css`
   align-items: center;
   gap: 0.5rem;
 `;
+
+const H1 = css`
+  font-size: 1.5rem;
+`;
+
+const Title = css`
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+`;
 export const Header = ({ children }: { children?: React.ReactNode }) => {
   return (
     <header className={HeaderStyle}>
       <div className={Div}>
         <IconWaveSine />
-        <h1>NOISE GENERATOR</h1>
+        <div className={Title}>
+          <h1 className={H1}>NOISE GENERATOR</h1>
+          <p>1.0.0</p>
+        </div>
         <IconWaveSquare />
       </div>
       {children}
