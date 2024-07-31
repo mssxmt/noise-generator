@@ -92,12 +92,14 @@ type Props = {
   handlePlayStored: (noise: StoredNoise) => void;
   handleDeleteNoise: (id: string) => void;
   keyMapping: string[];
+  selectedId: string;
 };
 export const SavedList = ({
   storedNoises,
   handlePlayStored,
   handleDeleteNoise,
   keyMapping,
+  selectedId,
 }: Props) => {
   return (
     <ul
@@ -113,7 +115,14 @@ export const SavedList = ({
           <p>
             {noise.type} - {noise.options.duration}s
           </p>
-          <button className={Button} onClick={() => handlePlayStored(noise)}>
+          <button
+            className={Button}
+            style={{
+              color:
+                selectedId === noise.id ? 'var(--success)' : 'var(--greyDark)',
+            }}
+            onClick={() => handlePlayStored(noise)}
+          >
             PLAY <IconRun size={16} />
           </button>
           <button
