@@ -245,11 +245,11 @@ export const Generator: React.FC = () => {
       </div>
       <div
         style={{
-          width: '100%',
+          width: displayChecked ? '0' : '100%',
           aspectRatio: '2 / 1',
           backgroundColor: 'transparent',
           boxShadow: displayChecked ? 'none' : 'var(--var-shadow)',
-          borderRadius: '1rem',
+          borderRadius: displayChecked ? '0' : '1rem',
         }}
       >
         {audioData && (
