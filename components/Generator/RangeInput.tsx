@@ -1,7 +1,7 @@
 'use client';
 
 import { css } from '@kuma-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 
 const rangeInput = css`
   appearance: none;
@@ -45,10 +45,37 @@ const rangeInput = css`
       transform: scale(1.1);
     }
   }
+
+  [data-open='close'] &::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: t('colors.grey.dark');
+    cursor: grab;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: t('colors.primary.default');
+      transform: scale(1);
+    }
+  }
+
+  [data-open='close'] &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: t('colors.grey.dark');
+    cursor: grab;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: t('colors.primary.default');
+      transform: scale(1);
+    }
+  }
 `;
 
 const rangeLabel = css`
-  display: block;
   margin-bottom: 10px;
   font-size: 16px;
   color: t('colors.grey.dark');
@@ -58,6 +85,48 @@ const rangeLabel = css`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  &[data-open='close'] {
+    height: 20px;
+  }
+`;
+
+const PlusMinus = css`
+  position: relative;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+
+  &[data-open='close'] {
+    &:before {
+      transform: translatey(-50%) rotate(-90deg);
+      opacity: 0;
+    }
+    &:after {
+      transform: translatey(-50%) rotate(0);
+    }
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    background-color: t('colors.primary.default');
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transition: 0.35s;
+    width: 100%;
+    height: 3px;
+  }
+
+  &:before {
+    transform: translatey(-50%);
+  }
+
+  &:after {
+    transform: translatey(-50%) rotate(90deg);
+  }
 `;
 
 type Props = {
@@ -79,23 +148,36 @@ const RangeInputComponent: React.FC<Props> = ({
   max,
   step,
 }) => {
+  const [isMinimized, setIsMinimized] = useState(true);
   return (
-    <label className={rangeLabel}>
-      {label}: {parseFloat((value * 100).toFixed(0))}
-      {as === 'Duration' && ' ms'}
-      <input
-        type='range'
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => {
-          e.stopPropagation();
-          setValue(Number(e.target.value));
-        }}
-        className={rangeInput}
-      />
-    </label>
+    <>
+      <label className={rangeLabel} data-open={isMinimized ? 'close' : 'open'}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <button title='minimize' onClick={() => setIsMinimized(!isMinimized)}>
+            <div
+              data-open={isMinimized ? 'open' : 'close'}
+              className={PlusMinus}
+            ></div>
+          </button>
+          <p>
+            {label}: {parseFloat((value * 100).toFixed(0))}
+            {as === 'Duration' && ' ms'}
+          </p>
+        </span>
+        <input
+          type='range'
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => {
+            e.stopPropagation();
+            setValue(Number(e.target.value));
+          }}
+          className={rangeInput}
+        />
+      </label>
+    </>
   );
 };
 
