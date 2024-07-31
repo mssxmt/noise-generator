@@ -55,6 +55,10 @@ export const Generator: React.FC = () => {
   const [storedNoises, setStoredNoises] = useState<StoredNoise[]>([]); //表示用のstate
   const [audioData, setAudioData] = useState<Float32Array | null>(null);
   const [displayChecked, setDiscplayChecked] = useState(false);
+  const [displayChangeChecked, setDisplayChangeChecked] = useState(false);
+  const [displayPad_ListChecked, setDisplayPad_ListChecked] = useState(true);
+  const [selectedId, setSelectedId] = useState<string>('');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadInitialStoredNoises = async () => {
     const initialStoredNoises = await getStoredNoises();
