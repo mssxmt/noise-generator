@@ -46,6 +46,11 @@ const Ul = css`
   padding: 1rem;
   box-shadow: t('colors.innerShadow');
   border-radius: 1rem;
+
+  @media screen and (max-width: 700px) {
+    gap: 8px;
+    padding: 0.5rem;
+  }
 `;
 
 const Span = css`
@@ -98,7 +103,7 @@ export const SavedGridList = ({
                 backgroundColor:
                   selectedId === storedNoise?.id
                     ? 'rgba(255, 251, 0, 0.1)'
-                    : 'var(--greyLight-1)',
+                    : 'transparent',
               }}
               onClick={() =>
                 storedNoise ? handlePlayStored(storedNoise) : null
