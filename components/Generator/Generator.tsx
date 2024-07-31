@@ -197,7 +197,7 @@ export const Generator: React.FC = () => {
       >
         <h3 className={Label}>SAVED SOUND(S)</h3>
           <ToggleSwitch
-            id='displayChange'
+            id='displayPad_List'
             checked={displayPad_ListChecked}
             setChecked={setDisplayPad_ListChecked}
             checkedIcon={<IconLayoutGrid size={18} />}
