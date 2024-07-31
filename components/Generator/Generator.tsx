@@ -121,9 +121,19 @@ export const Generator: React.FC = () => {
   );
 
   const handlePlayStored = useCallback((noise: StoredNoise) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
     const noiseData = new Float32Array(noise.data);
     setAudioData(noiseData);
     playAudio(noiseData, noise.options.volume);
+
+    setSelectedId(noise.id);
+    const duration =
+      noise.options.duration < 0.1 ? 0.1 : noise.options.duration;
+    timerRef.current = setTimeout(() => {
+      setSelectedId('');
+    }, duration * 1000);
   }, []);
 
   const handleKeyPress = useCallback(
