@@ -89,7 +89,10 @@ const RangeInputComponent: React.FC<Props> = ({
         max={max}
         step={step}
         value={value}
-        onChange={(e) => setValue(Number(e.target.value))}
+        onChange={(e) => {
+          e.stopPropagation();
+          setValue(Number(e.target.value));
+        }}
         className={rangeInput}
       />
     </label>
