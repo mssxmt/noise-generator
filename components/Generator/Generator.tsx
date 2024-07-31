@@ -186,15 +186,41 @@ export const Generator: React.FC = () => {
         />
       </div>
       <section
-        style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
       >
         <h3 className={Label}>SAVED SOUND(S)</h3>
+          <ToggleSwitch
+            id='displayChange'
+            checked={displayPad_ListChecked}
+            setChecked={setDisplayPad_ListChecked}
+            checkedIcon={<IconLayoutGrid size={18} />}
+            uncheckedIcon={<IconLayoutList size={18} />}
+          />
+        </div>
+        {displayPad_ListChecked ? (
+          <SavedGridList
+            storedNoises={storedNoises}
+            handlePlayStored={handlePlayStored}
+            handleDeleteNoise={handleDeleteNoise}
+            keyMapping={keyMapping}
+            selectedId={selectedId}
+          />
+        ) : (
         <SavedList
           storedNoises={storedNoises}
           handlePlayStored={handlePlayStored}
           handleDeleteNoise={handleDeleteNoise}
           keyMapping={keyMapping}
+            selectedId={selectedId}
         />
+        )}
         <DeleteAll
           storedNoises={storedNoises}
           setStoredNoises={setStoredNoises}
