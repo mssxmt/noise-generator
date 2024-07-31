@@ -5,6 +5,7 @@ import { KumaRegistry } from '@kuma-ui/next-plugin/registry';
 import { ThemeProvider } from '@/providers/NextThmesProvider';
 import { Header } from '@/components/Header';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { Footer } from '@/components/Footer/Footer';
 
 const siteName = 'NOISE XENERATOR';
 const description = `no problem! Let's generate noise!`;
@@ -59,6 +60,7 @@ export default function RootLayout({
             <ThemeToggle />
           </Header>
           <KumaRegistry>{children}</KumaRegistry>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
