@@ -81,12 +81,12 @@ export const Generator: React.FC = () => {
 
       if (isPreview) {
         setIsPlaying(true);
-        const stopPlayback = playAudio(noiseData, volume);
+        playAudio(noiseData, volume);
 
         // 再生が終了したら状態を更新
         setTimeout(() => {
           setIsPlaying(false);
-          stopPlayback();
+          stopAudio();
         }, duration * 1000);
       }
 
