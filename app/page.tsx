@@ -8,7 +8,7 @@ const Main = css`
   align-items: center;
   /* justify-content: center; */
   min-height: 100vh;
-  padding: 0 5rem;
+  padding: 0 2rem;
   color: t('colors.primary.default');
 `;
 
