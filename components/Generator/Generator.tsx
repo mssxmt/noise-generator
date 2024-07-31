@@ -45,6 +45,7 @@ const Label = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1rem;
 `;
 
 export const Generator: React.FC = () => {
@@ -188,14 +189,14 @@ export const Generator: React.FC = () => {
       <section
         style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}
       >
+        <div>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+              justifyContent: 'flex-end',
           }}
       >
-        <h3 className={Label}>SAVED SOUND(S)</h3>
           <ToggleSwitch
             id='displayPad_List'
             checked={displayPad_ListChecked}
@@ -204,6 +205,7 @@ export const Generator: React.FC = () => {
             uncheckedIcon={<IconLayoutList size={18} />}
           />
         </div>
+          <h3 className={Label}>SAVED SOUND(S)</h3>
         {displayPad_ListChecked ? (
           <SavedGridList
             storedNoises={storedNoises}
@@ -221,6 +223,7 @@ export const Generator: React.FC = () => {
             selectedId={selectedId}
         />
         )}
+        </div>
         <DeleteAll
           storedNoises={storedNoises}
           setStoredNoises={setStoredNoises}
