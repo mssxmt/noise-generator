@@ -65,9 +65,9 @@ export const DeleteAll = ({ setStoredNoises, storedNoises }: Props) => {
         }}
       >
         DELETE ALL
-        {storedNoises.map((noise) => (
+        {storedNoises.map((noise, index) => (
           <span key={noise.id}>
-            <IconTrash />
+            <IconTrash size={index + 1} />
           </span>
         ))}
       </button>
