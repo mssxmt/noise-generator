@@ -23,7 +23,7 @@ import { SavedList } from './SavedList';
 import { ToggleSwitch } from '../ToggleSwitchComponent';
 import { DeleteAll } from './DeleteAll';
 import { keyMapping } from '@/utils/keyMappting';
-import WaveformDisplayThree from '../WaveformDisplay/AudioVisualizer';
+// import WaveformDisplayThree from '../WaveformDisplay/AudioVisualizer';
 import {
   IconCube,
   IconLayoutGrid,
@@ -249,6 +249,16 @@ export const Generator: React.FC = () => {
         }}
       >
         {audioData && (
+          // <>
+          //   {displayChangeChecked ? (
+          //     <WaveformDisplayThree
+          //       audioData={audioData}
+          //       sampleRate={44100}
+          //       isPlaying={isPlaying}
+          //       volume={volume}
+          //       displayChecked={displayChecked}
+          //     />
+          //   ) : (
           <WaveformDisplay
             audioData={audioData}
             sampleRate={44100}
@@ -257,6 +267,8 @@ export const Generator: React.FC = () => {
             displayChecked={displayChecked}
           />
         )}
+        {/* </>
+        )} */}
       </div>
     </section>
   );
