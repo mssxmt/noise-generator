@@ -235,6 +235,7 @@ export const Generator: React.FC = () => {
       >
         <DownloadManager noiseFiles={storedNoises} />
         <ToggleSwitch
+          id='display'
           checked={displayChecked}
           setChecked={setDiscplayChecked}
         />
