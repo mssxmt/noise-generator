@@ -23,6 +23,14 @@ import { SavedList } from './SavedList';
 import { ToggleSwitch } from '../ToggleSwitchComponent';
 import { DeleteAll } from './DeleteAll';
 import { keyMapping } from '@/utils/keyMappting';
+import WaveformDisplayThree from '../WaveformDisplay/AudioVisualizer';
+import {
+  IconCube,
+  IconLayoutGrid,
+  IconLayoutList,
+  IconPerspective,
+} from '@tabler/icons-react';
+import { SavedGridList } from './SavedGridList';
 
 const Label = css`
   border: none;
