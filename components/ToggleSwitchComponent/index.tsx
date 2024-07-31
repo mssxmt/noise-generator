@@ -1,6 +1,6 @@
 import { css } from '@kuma-ui/core';
 import { IconSatellite, IconPlanet } from '@tabler/icons-react';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
 const Switch = css`
   grid-column: 1 / 2;
@@ -82,10 +82,19 @@ const IconWrapper = css`
 `;
 
 type Props = {
+  id: string;
   checked: boolean;
   setChecked: (checked: boolean) => void;
+  checkedIcon?: ReactNode;
+  uncheckedIcon?: ReactNode;
 };
-export const ToggleSwitch = ({ checked, setChecked }: Props) => {
+export const ToggleSwitch = ({
+  id,
+  checked,
+  setChecked,
+  checkedIcon = <IconPlanet size={18} />,
+  uncheckedIcon = <IconSatellite size={18} />,
+}: Props) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
   };
@@ -95,12 +104,15 @@ export const ToggleSwitch = ({ checked, setChecked }: Props) => {
       <div className={Switch}>
         <div className={Input}>
           <input
-            id='switch-1'
+            id={id}
             type='checkbox'
             checked={checked}
-            onChange={handleChange}
+            onChange={(e) => {
+              e.stopPropagation();
+              handleChange(e);
+            }}
           />
-          <label htmlFor='switch-1'>
+          <label htmlFor={id}>
             <div
               className={IconWrapper}
               style={{
@@ -108,7 +120,7 @@ export const ToggleSwitch = ({ checked, setChecked }: Props) => {
                 color: checked ? 'var(--primary-dark)' : 'var(--greyLight-1)',
               }}
             >
-              {checked ? <IconPlanet size={18} /> : <IconSatellite size={18} />}
+              {checked ? checkedIcon : uncheckedIcon}
             </div>
           </label>
         </div>
