@@ -183,7 +183,7 @@ export const Generator: React.FC = () => {
           setValue={setVolume}
           min={0}
           max={1}
-          step={0.1}
+          step={0.01}
         />
       </div>
       <section
