@@ -3,20 +3,22 @@ import React, { useRef, useEffect, useState } from 'react';
 
 // インターフェース定義：WaveformDisplay コンポーネントのプロパティ
 interface WaveformDisplayProps {
-  audioData: Float32Array; // オーディオデータ
-  sampleRate: number; // サンプルレート
-  isPlaying: boolean; // 再生中かどうか
+  audioData: Float32Array | null; // オーディオデータ
   volume: number; // 音量
   displayChecked: boolean;
+  strokeColor: string;
+  lineWidth: number;
+  sliceWidth: number;
 }
 
 // WaveformDisplay コンポーネントの定義
 const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   audioData,
-  sampleRate,
-  isPlaying,
   volume,
   displayChecked,
+  strokeColor,
+  lineWidth,
+  sliceWidth: SW,
 }) => {
   // canvas 要素の参照を保持するための ref を作成
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,7 +30,7 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   // コンポーネントがマウント・アンマウントされた時に実行する処理
   useEffect(() => {
     if (!canvasRef.current) return;
-
+    if (!audioData) return;
     // canvas 要素の取得とコンテキストの作成
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -60,7 +62,8 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
     // ノードをチェーン状に接続
     source.connect(gainNode);
     gainNode.connect(newAnalyser);
-    newAnalyser.connect(context.destination);
+    // `context.destination` に接続しないことで音を鳴らさない
+    // newAnalyser.connect(context.destination);
 
     // オーディオソースの再生開始
     source.start();
@@ -77,18 +80,18 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
 
       const rootStyles = getComputedStyle(document.documentElement);
       const fillColor = rootStyles.getPropertyValue('--greyLight-1');
-      const strokeColor = rootStyles.getPropertyValue('--greyDark');
+      // const strokeColor = rootStyles.getPropertyValue('--greyDark');
 
       // canvas をクリア
       ctx.fillStyle = fillColor;
       ctx.fillRect(0, 0, width, height);
 
       // 波形を描画
-      ctx.lineWidth = 0.5;
+      ctx.lineWidth = lineWidth;
       ctx.strokeStyle = strokeColor;
       ctx.beginPath();
 
-      const sliceWidth = (width * 1.0) / bufferLength;
+      const sliceWidth = (width * SW) / bufferLength;
       let x = 0;
 
       for (let i = 0; i < bufferLength; i++) {
