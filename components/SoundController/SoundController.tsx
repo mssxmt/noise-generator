@@ -5,6 +5,25 @@ import NoiseList from '../NoiseList/NoiseList';
 import { useState } from 'react';
 import { css } from '@kuma-ui/core';
 
+const WrapperStyle = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-height: 370px;
+  margin-bottom: 16px;
+  padding: 0 1rem;
+  overflow: visible;
+  transition: all 0.3s ease;
+  opacity: 1;
+  &[data-open='close'] {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-bottom: 0;
+  }
+`;
+
 const PlusMinus = css`
   position: relative;
   width: 15px;
@@ -112,7 +131,7 @@ export const SoundController = ({
         ></div>
         <p>Sound Preview</p>
       </button>
-      <div className={BoxStyle} data-open={isMinimized ? 'open' : 'close'}>
+      <div className={WrapperStyle} data-open={isMinimized ? 'open' : 'close'}>
         <div>
           <div
             style={{
