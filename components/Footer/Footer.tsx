@@ -4,7 +4,7 @@ const FooterStyle = css`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 0 1rem 0;
+  padding: 1rem;
   color: t('colors.primary.default');
   width: 100%;
   max-width: 800px;
@@ -12,7 +12,7 @@ const FooterStyle = css`
   margin-right: auto;
   height: fit-content;
   box-shadow: t('colors.shadow');
-  border-radius: 1rem;
+  border-radius: 1rem 1rem 0 0;
 `;
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
