@@ -15,22 +15,16 @@ import {
 } from '@/utils/storageManager';
 import WaveformDisplay from '../WaveformDisplay/WaveformDisplay';
 import DownloadManager from '../DownloadManager/DownloadManager';
-import NoiseList from './NoiseList';
-import RangeInputComponent from './RangeInput';
 import { css } from '@kuma-ui/core';
-import { ControlButtons } from './ControlButtons';
 import { SavedList } from './SavedList';
 import { ToggleSwitch } from '../ToggleSwitchComponent';
 import { DeleteAll } from './DeleteAll';
 import { keyMapping } from '@/utils/keyMappting';
-// import WaveformDisplayThree from '../WaveformDisplay/AudioVisualizer';
-import {
-  IconCube,
-  IconLayoutGrid,
-  IconLayoutList,
-  IconPerspective,
-} from '@tabler/icons-react';
+import WaveformDisplayThree from '../WaveformDisplay/AudioVisualizer';
+import { IconLayoutGrid, IconLayoutList } from '@tabler/icons-react';
 import { SavedGridList } from './SavedGridList';
+import { SoundController } from '../SoundController/SoundController';
+import { VisualController } from '../VisualController/VisualController';
 
 const Label = css`
   border: none;
@@ -45,7 +39,6 @@ const Label = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
 `;
 
 export const Generator: React.FC = () => {
@@ -56,9 +49,15 @@ export const Generator: React.FC = () => {
   const [storedNoises, setStoredNoises] = useState<StoredNoise[]>([]); //表示用のstate
   const [audioData, setAudioData] = useState<Float32Array | null>(null);
   const [displayChecked, setDiscplayChecked] = useState(true);
-  const [displayChangeChecked, setDisplayChangeChecked] = useState(false);
+  const [visualizerChangeChecked, setVisualizerChangeChecked] = useState(false);
   const [displayPad_ListChecked, setDisplayPad_ListChecked] = useState(true);
   const [selectedId, setSelectedId] = useState<string>('');
+  const [effectType, setEffectType] = useState(0);
+  const [colorMode, setColorMode] = useState(0);
+  const [wireframeMode, setWireframeMode] = useState(0);
+  const [strokeColor, setstrokeColor] = useState('#6b7a9a');
+  const [lineWidth, setLineWidth] = useState(0.5);
+  const [sliceWidth, setSliceWidth] = useState(1);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadInitialStoredNoises = async () => {
@@ -156,73 +155,79 @@ export const Generator: React.FC = () => {
 
   return (
     <section style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-        <NoiseList noiseType={noiseType} setNoiseType={setNoiseType} />
-        <ControlButtons
-          isPlaying={isPlaying}
-          handleGenerateAndPlay={handleGenerateAndPlay}
-          handleStop={handleStop}
-        />
-      </div>
-      <div>
-        <RangeInputComponent
-          as='Duration'
-          label='Duration'
-          value={duration}
-          setValue={setDuration}
-          min={0.01}
-          max={3}
-          step={0.01}
-        />
-      </div>
-      <div>
-        <RangeInputComponent
-          as='Volume'
-          label='Volume'
-          value={volume}
-          setValue={setVolume}
-          min={0}
-          max={1}
-          step={0.01}
-        />
-      </div>
+      <SoundController
+        {...{
+          noiseType,
+          setNoiseType,
+          isPlaying,
+          handleGenerateAndPlay,
+          handleStop,
+          duration,
+          setDuration,
+          volume,
+          setVolume,
+        }}
+      />
+      <VisualController
+        {...{
+          effectType,
+          setEffectType,
+          colorMode,
+          setColorMode,
+          wireframeMode,
+          setWireframeMode,
+          displayChecked,
+          setDiscplayChecked,
+          visualizerChangeChecked,
+          setVisualizerChangeChecked,
+          strokeColor,
+          setstrokeColor,
+          lineWidth,
+          setLineWidth,
+          sliceWidth,
+          setSliceWidth,
+        }}
+      />
+
       <section
         style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}
       >
         <div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-              justifyContent: 'flex-end',
-          }}
-      >
-          <ToggleSwitch
-            id='displayPad_List'
-            checked={displayPad_ListChecked}
-            setChecked={setDisplayPad_ListChecked}
-            checkedIcon={<IconLayoutGrid size={18} />}
-            uncheckedIcon={<IconLayoutList size={18} />}
-          />
-        </div>
-          <h3 className={Label}>SAVED SOUND(S)</h3>
-        {displayPad_ListChecked ? (
-          <SavedGridList
-            storedNoises={storedNoises}
-            handlePlayStored={handlePlayStored}
-            handleDeleteNoise={handleDeleteNoise}
-            keyMapping={keyMapping}
-            selectedId={selectedId}
-          />
-        ) : (
-        <SavedList
-          storedNoises={storedNoises}
-          handlePlayStored={handlePlayStored}
-          handleDeleteNoise={handleDeleteNoise}
-          keyMapping={keyMapping}
-            selectedId={selectedId}
-        />
-        )}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '8px 0',
+            }}
+          >
+            <h3 className={Label}>SAVED SOUND(S)</h3>
+            <ToggleSwitch
+              id='displayPad_List'
+              checked={displayPad_ListChecked}
+              setChecked={setDisplayPad_ListChecked}
+              checkedIcon={<IconLayoutGrid size={18} />}
+              uncheckedIcon={<IconLayoutList size={18} />}
+            />
+          </div>
+
+          {displayPad_ListChecked ? (
+            <SavedGridList
+              storedNoises={storedNoises}
+              handlePlayStored={handlePlayStored}
+              handleDeleteNoise={handleDeleteNoise}
+              keyMapping={keyMapping}
+              selectedId={selectedId}
+            />
+          ) : (
+            <SavedList
+              storedNoises={storedNoises}
+              handlePlayStored={handlePlayStored}
+              handleDeleteNoise={handleDeleteNoise}
+              keyMapping={keyMapping}
+              selectedId={selectedId}
+            />
+          )}
         </div>
         <DeleteAll
           storedNoises={storedNoises}
@@ -232,16 +237,9 @@ export const Generator: React.FC = () => {
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
         }}
       >
         <DownloadManager noiseFiles={storedNoises} />
-        <ToggleSwitch
-          id='display'
-          checked={displayChecked}
-          setChecked={setDiscplayChecked}
-        />
       </div>
       <div
         style={{
@@ -252,27 +250,30 @@ export const Generator: React.FC = () => {
           borderRadius: displayChecked ? '0' : '1rem',
         }}
       >
-        {audioData && (
-          // <>
-          //   {displayChangeChecked ? (
-          //     <WaveformDisplayThree
-          //       audioData={audioData}
-          //       sampleRate={44100}
-          //       isPlaying={isPlaying}
-          //       volume={volume}
-          //       displayChecked={displayChecked}
-          //     />
-          //   ) : (
-          <WaveformDisplay
-            audioData={audioData}
-            sampleRate={44100}
-            isPlaying={isPlaying}
-            volume={volume}
-            displayChecked={displayChecked}
-          />
-        )}
-        {/* </>
-        )} */}
+        {/* {audioData && ( */}
+        <>
+          {visualizerChangeChecked ? (
+            <WaveformDisplayThree
+              audioData={audioData}
+              sampleRate={44100}
+              volume={volume}
+              displayChecked={displayChecked}
+              effectType={effectType}
+              colorMode={colorMode}
+              wireframeMode={wireframeMode}
+            />
+          ) : (
+            <WaveformDisplay
+              audioData={audioData}
+              volume={volume}
+              displayChecked={displayChecked}
+              strokeColor={strokeColor}
+              lineWidth={lineWidth}
+              sliceWidth={sliceWidth}
+            />
+          )}
+        </>
+        {/* )} */}
       </div>
     </section>
   );
