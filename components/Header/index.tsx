@@ -14,7 +14,11 @@ const HeaderStyle = css`
   margin-right: auto;
   height: 60px;
   box-shadow: t('colors.shadow');
-  border-radius: 1rem;
+  border-radius: 0 0 1rem 1rem;
+
+  @media screen and (max-width: 1071px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Div = css`
