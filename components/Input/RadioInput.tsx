@@ -5,7 +5,7 @@ const RadioInputStyle = css`
     position: absolute;
     top: -100vh;
     left: -100vw;
-    display: hidden;
+    visibility: hidden;
     opacity: 0;
   }
 
