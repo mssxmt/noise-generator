@@ -43,7 +43,7 @@ export const Header = ({ children }: { children?: React.ReactNode }) => {
         <IconWaveSine />
         <div className={Title}>
           <h1 className={H1}>NOISE GENERATOR</h1>
-          <p>1.5.1</p>
+          <p>1.5.2</p>
         </div>
         <IconWaveSquare />
       </div>
