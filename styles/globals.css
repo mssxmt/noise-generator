@@ -64,6 +64,12 @@ body {
   min-height: 100vh;
 }
 
+html.disabled-scroll,
+html.disabled-scroll body {
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 #root {
   min-height: 100vh;
   display: flex;
