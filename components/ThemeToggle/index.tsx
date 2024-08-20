@@ -5,6 +5,8 @@ import { useTheme } from 'next-themes';
 import { css, styled } from '@kuma-ui/core';
 import { IconSun, IconMoon, IconDeviceDesktop } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { UserGuide } from '../UserGuide/UserGuide';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 const ToggleContainer = styled('div')`
   display: flex;
@@ -36,6 +38,11 @@ const ToggleButton = styled('button')`
     box-shadow: t('colors.shadow');
     color: t('colors.primary.light');
   }
+
+  @media screen and (max-width: 700px) {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const iconStyle = css`
@@ -46,6 +53,8 @@ const iconStyle = css`
 export const ThemeToggle: FC = () => {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpenDrawer, onCloseDrawer } = useScrollLock();
 
   useEffect(() => {
     setMounted(true);
@@ -57,6 +66,13 @@ export const ThemeToggle: FC = () => {
 
   return (
     <ToggleContainer>
+      {isOpen && <UserGuide onClose={onCloseDrawer} />}
+      <ToggleButton
+        style={{ boxShadow: 'var(--var-shadow)' }}
+        onClick={() => onOpenDrawer()}
+      >
+        help
+      </ToggleButton>
       <ToggleButton
         onClick={() => setTheme('light')}
         className={theme === 'light' ? 'active' : ''}
