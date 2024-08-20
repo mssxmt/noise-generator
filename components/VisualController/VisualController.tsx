@@ -34,7 +34,7 @@ const PlusMinus = css`
   height: 15px;
   cursor: pointer;
 
-  &[data-open='close'] {
+  &[data-open='open'] {
     &:before {
       transform: translatey(-50%) rotate(-90deg);
       opacity: 0;
@@ -114,22 +114,22 @@ export const VisualController = ({
   sliceWidth,
   setSliceWidth,
 }: Props) => {
-  const [isMinimized, setIsMinimized] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
   return (
     <div>
       <button
-        data-open={isMinimized ? 'open' : 'close'}
+        data-open={isMinimized ? 'close' : 'open'}
         className={ButtonStyle}
         title='minimize'
         onClick={() => setIsMinimized(!isMinimized)}
       >
         <div
-          data-open={isMinimized ? 'open' : 'close'}
+          data-open={isMinimized ? 'close' : 'open'}
           className={PlusMinus}
         ></div>
         <p>Visual Control</p>
       </button>
-      <div className={WrapperStyle} data-open={isMinimized ? 'open' : 'close'}>
+      <div className={WrapperStyle} data-open={isMinimized ? 'close' : 'open'}>
         {visualizerChangeChecked ? (
           <>
             <div className={BoxStyle}>
