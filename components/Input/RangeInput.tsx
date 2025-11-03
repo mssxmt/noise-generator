@@ -143,15 +143,6 @@ type Props = {
 /**
  * カスタムレンジ入力コンポーネント。
  * @param {Props} props - コンポーネントのプロパティ。
- * @param {'Duration' | 'Volume'} props.as - 入力の種類（'Duration'または'Volume'）。
- * @param {string} props.label - ラベルテキスト。
- * @param {number} props.value - 現在の値。
- * @param {(value: number) => void} props.setValue - 値が変更されたときに呼び出されるコールバック関数。
- * @param {number} props.min - 最小値。
- * @param {number} props.max - 最大値。
- * @param {number} props.step - ステップ値。
- * @param {boolean} [props.nomalValueLabel=false] - 通常の値をラベルに表示するかどうか。
- * @returns {JSX.Element} - レンジ入力コンポーネント。
  */
 const RangeInputComponent: React.FC<Props> = ({
   as,
