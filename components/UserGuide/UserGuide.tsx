@@ -92,6 +92,12 @@ const iconStyle = css`
   height: 24px;
 `;
 
+/**
+ * アプリケーションのユーザーガイドを表示するためのモーダルコンポーネント。
+ * @param {{ onClose: () => void }} props - コンポーネントのプロパティ。
+ * @param {() => void} props.onClose - モーダルを閉じるためのコールバック関数。
+ * @returns {JSX.Element} - ユーザーガイドモーダル。
+ */
 export const UserGuide = ({ onClose }: { onClose: () => void }) => {
   const elementRef = useRef<HTMLDivElement>(null);
 

@@ -54,6 +54,14 @@ type Props = {
   storedNoises: StoredNoise[];
   setStoredNoises: (StoredNoise: StoredNoise[]) => void;
 };
+
+/**
+ * 保存されたノイズをすべて削除するためのボタンを提供するコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {StoredNoise[]} props.storedNoises - 保存されているノイズの配列。
+ * @param {(StoredNoise: StoredNoise[]) => void} props.setStoredNoises - 保存されているノイズの配列を更新する関数。
+ * @returns {JSX.Element | false} - すべて削除ボタン。ノイズが保存されていない場合はfalse。
+ */
 export const DeleteAll = ({ setStoredNoises, storedNoises }: Props) => {
   return (
     storedNoises.length !== 0 && (

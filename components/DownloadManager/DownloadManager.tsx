@@ -38,6 +38,12 @@ const Button = css`
   }
 `;
 
+/**
+ * 保存されたノイズファイルを一括でダウンロードするためのボタンを提供するコンポーネント。
+ * @param {DownloadManagerProps} props - コンポーネントのプロパティ。
+ * @param {StoredNoise[]} props.noiseFiles - ダウンロード対象のノイズファイルの配列。
+ * @returns {JSX.Element} - ダウンロードボタン。
+ */
 const DownloadManager: React.FC<DownloadManagerProps> = ({ noiseFiles }) => {
   return (
     <div>

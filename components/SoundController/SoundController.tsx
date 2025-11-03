@@ -105,6 +105,12 @@ type Props = {
   volume: number;
   setVolume: React.Dispatch<React.SetStateAction<number>>;
 };
+
+/**
+ * サウンドのプレビューと制御を行うためのコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - サウンドコントローラー。
+ */
 export const SoundController = ({
   noiseType,
   setNoiseType,

@@ -67,6 +67,17 @@ type Props = {
   keyMapping: string[];
   selectedId: string;
 };
+
+/**
+ * 保存されたノイズをグリッド形式で表示し、再生するためのコンポーネント。
+ * @param {Props} props - コンポー-ネントのプロパティ。
+ * @param {StoredNoise[]} props.storedNoises - 保存されているノイズの配列。
+ * @param {(noise: StoredNoise) => void} props.handlePlayStored - 保存されたノイズを再生する関数。
+ * @param {(id: string) => void} props.handleDeleteNoise - 保存されたノイズを削除する関数。
+ * @param {string[]} props.keyMapping - キーボードマッピングの配列。
+ * @param {string} props.selectedId - 現在選択されているノイズのID。
+ * @returns {JSX.Element} - 保存されたノイズのグリッドリスト。
+ */
 export const SavedGridList = ({
   storedNoises,
   handlePlayStored,

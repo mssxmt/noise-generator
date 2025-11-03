@@ -1,5 +1,12 @@
 import Image from 'next/image';
 
+/**
+ * Next.jsのImageコンポーネントをラップしたコンポーネント。
+ * @param {{ src: string; alt: string }} props - コンポーネントのプロパティ。
+ * @param {string} props.src - 画像のソースURL。
+ * @param {string} props.alt - 画像の代替テキスト。
+ * @returns {JSX.Element} - 画像コンポーネント。
+ */
 export const NextImage = ({ src, alt }: { src: string; alt: string }) => {
   return (
     <div

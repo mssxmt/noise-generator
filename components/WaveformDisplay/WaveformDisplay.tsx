@@ -1,7 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
 // import styles from './WaveformDisplay.css';
 
-// インターフェース定義：WaveformDisplay コンポーネントのプロパティ
+/**
+ * @interface WaveformDisplayProps
+ * @description WaveformDisplayコンポーネントのプロパティを定義します。
+ * @property {Float32Array | null} audioData - 表示するオーディオデータ。
+ * @property {number} volume - オーディオの音量。
+ * @property {boolean} displayChecked - 表示がチェックされているかどうか。
+ * @property {string} strokeColor - 波形の色。
+ * @property {number} lineWidth - 波形の線の幅。
+ * @property {number} sliceWidth - 波形のスライスの幅。
+ */
 interface WaveformDisplayProps {
   audioData: Float32Array | null; // オーディオデータ
   volume: number; // 音量
@@ -11,7 +20,11 @@ interface WaveformDisplayProps {
   sliceWidth: number;
 }
 
-// WaveformDisplay コンポーネントの定義
+/**
+ * オーディオデータの波形をキャンバスに描画するコンポーネント。
+ * @param {WaveformDisplayProps} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - 波形表示用のキャンバス要素。
+ */
 const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   audioData,
   volume,
