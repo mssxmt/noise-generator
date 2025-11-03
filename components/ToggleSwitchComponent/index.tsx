@@ -88,6 +88,17 @@ type Props = {
   checkedIcon?: ReactNode;
   uncheckedIcon?: ReactNode;
 };
+
+/**
+ * カスタムトグルスイッチコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {string} props.id - input要素の一意なID。
+ * @param {boolean} props.checked - スイッチがオンかどうかを示すフラグ。
+ * @param {(checked: boolean) => void} props.setChecked - スイッチの状態を変更するためのコールバック関数。
+ * @param {ReactNode} [props.checkedIcon] - オン状態のときに表示するアイコン。
+ * @param {ReactNode} [props.uncheckedIcon] - オフ状態のときに表示するアイコン。
+ * @returns {JSX.Element} - トグルスイッチコンポーネント。
+ */
 export const ToggleSwitch = ({
   id,
   checked,

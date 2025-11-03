@@ -41,6 +41,10 @@ const Label = css`
   justify-content: center;
 `;
 
+/**
+ * ノイズ生成、再生、保存、表示を管理するメインコンポーネント。
+ * @returns {JSX.Element} - ノイズジェネレーターのUI。
+ */
 export const Generator: React.FC = () => {
   const [noiseType, setNoiseType] = useState<NoiseType>('white');
   const [duration, setDuration] = useState(0.5);

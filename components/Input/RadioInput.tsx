@@ -59,6 +59,17 @@ type Props = {
   selectedValue: number;
   type: 'checkbox' | 'radio';
 };
+
+/**
+ * カスタムラジオボタンまたはチェックボックスの入力コンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {{ name: string; value: number }[]} props.values - 選択肢の配列。
+ * @param {string} props.name - input要素のname属性。
+ * @param {(value: number) => void} props.onChange - 値が変更されたときに呼び出されるコールバック関数。
+ * @param {number} props.selectedValue - 現在選択されている値。
+ * @param {'checkbox' | 'radio'} props.type - 入力の種類（'checkbox'または'radio'）。
+ * @returns {JSX.Element[]} - ラジオボタンまたはチェックボックスのリスト。
+ */
 const RadioInput: React.FC<Props> = ({
   values,
   name,

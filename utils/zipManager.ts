@@ -1,5 +1,10 @@
 import JSZip from 'jszip';
 
+/**
+ * ファイルの配列からZIPファイルのBlobを作成します。
+ * @param {({ name: string; data: Blob })[]} files - ZIPファイルに追加するファイルの配列。
+ * @returns {Promise<Blob>} ZIPファイルのBlob。
+ */
 export const createZip = async (
   files: { name: string; data: Blob }[]
 ): Promise<Blob> => {
@@ -12,7 +17,12 @@ export const createZip = async (
   return await zip.generateAsync({ type: 'blob' });
 };
 
-export const downloadZip = (zipBlob: Blob, fileName: string) => {
+/**
+ * ZIPファイルのBlobをダウンロードします。
+ * @param {Blob} zipBlob - ダウンロードするZIPファイルのBlob。
+ * @param {string} fileName - ダウンロードするファイルの名前。
+ */
+export const downloadZip = (zipBlob: Blob, fileName:string) => {
   const link = document.createElement('a');
   link.href = URL.createObjectURL(zipBlob);
   link.download = fileName;

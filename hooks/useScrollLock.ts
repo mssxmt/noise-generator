@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
 
 /**
- * bodyのスクロールを無効化するためのoverflow:hiddenクラスを付与
- *
- * @return { @isOpen 開閉状態真偽値 @onOpenDrawer 開く関数 @onCloseDrawer 閉じる関数 }
- * onOpenDrawer 実行時にhtml要素にdisabled-scrollクラスを付与
+ * bodyのスクロールをロックするためのカスタムフック。
+ * @returns {{
+ *   isOpen: boolean;
+ *   onOpenDrawer: () => void;
+ *   onCloseDrawer: () => void;
+ * }} スクロールロックの状態とそれを制御するための関数のセット。
  */
 export const useScrollLock = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -59,6 +59,11 @@
 //       }
 //     `;
 // };
+
+/**
+ * @const {string} vertexShader
+ * @description 頂点シェーダーのGLSLコード。オーディオデータに基づいて頂点のZ座標を計算し、視覚効果を生成します。
+ */
 const vertexShader = `
   varying float x;
   varying float y;
@@ -94,6 +99,10 @@ if (u_effect_type == 0) {
   }
 `;
 
+/**
+ * @const {string} fragmentShader
+ * @description フラグメントシェーダーのGLSLコード。ピクセルの色を計算し、視覚効果を生成します。
+ */
 const fragmentShader = `
   varying float x;
   varying float y;

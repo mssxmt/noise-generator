@@ -5,6 +5,17 @@ import * as THREE from 'three';
 // import { GUI } from 'dat.gui';
 import { vertexShader, fragmentShader } from './Shaders';
 
+/**
+ * @interface AudioVisualizerProps
+ * @description AudioVisualizerコンポーネントのプロパティを定義します。
+ * @property {Float32Array | null} audioData - 表示するオーディオデータ。
+ * @property {number} sampleRate - オーディオのサンプルレート。
+ * @property {number} volume - オーディオの音量。
+ * @property {boolean} [displayChecked] - 表示がチェックされているかどうか。
+ * @property {number} effectType - ビジュアライザーのエフェクトタイプ。
+ * @property {number} colorMode - ビジュアライザーのカラーモード。
+ * @property {number} wireframeMode - ワイヤーフレームモードが有効かどうか。
+ */
 interface AudioVisualizerProps {
   audioData: Float32Array | null;
   sampleRate: number;
@@ -15,6 +26,11 @@ interface AudioVisualizerProps {
   wireframeMode: number;
 }
 
+/**
+ * オーディオデータを視覚化するThree.jsメッシュをレンダリングするコンポーネント。
+ * @param {AudioVisualizerProps} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - オーディオビジュアライザーのメッシュ。
+ */
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
   audioData,
   sampleRate,
@@ -117,6 +133,11 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
   );
 };
 
+/**
+ * Three.jsのシーンを設定し、AudioVisualizerをレンダリングするコンポーネント。
+ * @param {{ audioData: Float32Array | null; sampleRate: number; volume: number; effectType: number; colorMode: number; wireframeMode: number; }} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - Three.jsシーン。
+ */
 const Scene: React.FC<{
   audioData: Float32Array | null;
   sampleRate: number;
@@ -150,7 +171,12 @@ const Scene: React.FC<{
     </>
   );
 };
-// メインコンポーネント
+
+/**
+ * Three.jsを使用してオーディオ波形を表示するメインコンポーネント。
+ * @param {AudioVisualizerProps} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - Three.js波形表示コンポーネント。
+ */
 const WaveformDisplayThree: React.FC<AudioVisualizerProps> = (props) => {
   const {
     audioData,
