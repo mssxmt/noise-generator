@@ -1,0 +1,11 @@
+pull_request_opened:
+    # PR作成時に概要を投稿
+    summary: true
+    # PR作成時に自動でコードレビューを実行 (問題解決のためにも重要)
+    code_review: true
+    # ヘルプメッセージは不要
+    help: false
+
+pull_request_synchronized:
+    # PR更新時に自動でコードレビューを実行
+    code_review: true
