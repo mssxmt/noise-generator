@@ -70,7 +70,7 @@ type Props = {
 
 /**
  * 保存されたノイズをグリッド形式で表示し、再生するためのコンポーネント。
- * @param {Props} props - コンポー-ネントのプロパティ。
+ * @param {Props} props - コンポーネントのプロパティ。
  * @param {StoredNoise[]} props.storedNoises - 保存されているノイズの配列。
  * @param {(noise: StoredNoise) => void} props.handlePlayStored - 保存されたノイズを再生する関数。
  * @param {(id: string) => void} props.handleDeleteNoise - 保存されたノイズを削除する関数。

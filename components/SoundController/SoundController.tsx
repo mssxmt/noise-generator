@@ -109,6 +109,15 @@ type Props = {
 /**
  * サウンドのプレビューと制御を行うためのコンポーネント。
  * @param {Props} props - コンポーネントのプロパティ。
+ * @param {NoiseType} props.noiseType - 現在選択されているノイズの種類。
+ * @param {React.Dispatch<React.SetStateAction<NoiseType>>} props.setNoiseType - ノイズの種類を設定する関数。
+ * @param {boolean} props.isPlaying - 再生中かどうかを示すフラグ。
+ * @param {({ isPreview }: { isPreview: boolean; }) => Promise<void>} props.handleGenerateAndPlay - ノイズを生成・再生する関数。
+ * @param {() => void} props.handleStop - 再生を停止する関数。
+ * @param {number} props.duration - ノイズの持続時間。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setDuration - 持続時間を設定する関数。
+ * @param {number} props.volume - 音量。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setVolume - 音量を設定する関数。
  * @returns {JSX.Element} - サウンドコントローラー。
  */
 export const SoundController = ({
