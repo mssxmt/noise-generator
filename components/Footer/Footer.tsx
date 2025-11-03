@@ -14,6 +14,11 @@ const FooterStyle = css`
   box-shadow: t('colors.shadow');
   border-radius: 1rem 1rem 0 0;
 `;
+
+/**
+ * アプリケーションのフッターコンポーネント。
+ * @returns {JSX.Element} - フッター。
+ */
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 

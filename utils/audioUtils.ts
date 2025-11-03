@@ -11,6 +11,7 @@ let audioContext: AudioContext | null = null;
 /**
  * AudioContextを取得または作成します。
  * ブラウザの制限により、ユーザーインタラクション後に初期化する必要があります。
+ * @returns {AudioContext} AudioContextのインスタンス。
  */
 const getAudioContext = (): AudioContext => {
   if (!audioContext) {
@@ -22,9 +23,9 @@ const getAudioContext = (): AudioContext => {
 
 /**
  * 音声データを再生します。
- * @param audioData 再生する音声データ（Float32Array）
- * @param volume 音量（0-1の範囲）
- * @returns 再生を停止するための関数
+ * @param {Float32Array} audioData 再生する音声データ。
+ * @param {number} [volume=1] 音量（0から1の範囲）。
+ * @returns {() => void} 再生を停止するための関数。
  */
 export const playAudio = (
   audioData: Float32Array,

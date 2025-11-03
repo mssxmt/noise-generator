@@ -96,6 +96,11 @@ type Props = {
   setSliceWidth: React.Dispatch<React.SetStateAction<number>>;
 };
 
+/**
+ * ビジュアライザーの表示を制御するためのコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @returns {JSX.Element} - ビジュアルコントローラー。
+ */
 export const VisualController = ({
   effectType,
   setEffectType,

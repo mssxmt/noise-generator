@@ -1,7 +1,18 @@
+/**
+ * 数値の配列をFloat32Arrayに変換します。
+ * @param {number[]} array - 変換する数値の配列。
+ * @returns {Float32Array} 変換されたFloat32Array。
+ */
 export const numberArrayToFloat32Array = (array: number[]): Float32Array => {
   return new Float32Array(array);
 };
 
+/**
+ * オーディオデータとサンプルレートからWAVファイルのBlobを作成します。
+ * @param {Float32Array} audioData - オーディオデータ。
+ * @param {number} sampleRate - サンプルレート。
+ * @returns {Blob} WAVファイルのBlob。
+ */
 export const createWavFile = (
   audioData: Float32Array,
   sampleRate: number
@@ -45,6 +56,12 @@ export const createWavFile = (
   return wavFile;
 };
 
+/**
+ * DataViewに文字列を書き込みます。
+ * @param {DataView} view - 書き込み先のDataView。
+ * @param {number} offset - 書き込みを開始するオフセット。
+ * @param {string} string - 書き込む文字列。
+ */
 const writeString = (view: DataView, offset: number, string: string) => {
   for (let i = 0; i < string.length; i++) {
     view.setUint8(offset + i, string.charCodeAt(i));

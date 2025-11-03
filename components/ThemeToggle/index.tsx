@@ -50,6 +50,10 @@ const iconStyle = css`
   height: 24px;
 `;
 
+/**
+ * アプリケーションのテーマ（ライト、ダーク、システム）を切り替えるためのコンポーネント。
+ * @returns {JSX.Element | null} - テーマ切り替えボタン。マウントされるまではnullを返します。
+ */
 export const ThemeToggle: FC = () => {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);

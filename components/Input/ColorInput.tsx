@@ -59,6 +59,14 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
 };
+
+/**
+ * カラーピッカーを提供する入力コンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {string} props.value - 現在の色の値（16進数）。
+ * @param {(value: string) => void} props.onChange - 色が変更されたときに呼び出されるコールバック関数。
+ * @returns {JSX.Element} - カラーピッカー入力。
+ */
 const ColorInput: React.FC<Props> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 

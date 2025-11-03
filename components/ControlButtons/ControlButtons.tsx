@@ -45,6 +45,14 @@ type Props = {
   handleStop: () => void;
 };
 
+/**
+ * 再生、停止、保存ボタンを提供するコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {boolean} props.isPlaying - 再生中かどうかを示すフラグ。
+ * @param {({ isPreview }: { isPreview: boolean }) => void} props.handleGenerateAndPlay - ノイズを生成して再生する関数。
+ * @param {() => void} props.handleStop - 再生を停止する関数。
+ * @returns {JSX.Element} - コントロールボタン。
+ */
 export const ControlButtons = ({
   isPlaying,
   handleGenerateAndPlay,

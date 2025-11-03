@@ -43,6 +43,13 @@ const Select = css`
   }
 `;
 
+/**
+ * ノイズの種類を選択するためのドロップダウンリストを提供するコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {NoiseType} props.noiseType - 現在選択されているノイズの種類。
+ * @param {(noiseType: NoiseType) => void} props.setNoiseType - ノイズの種類を変更するためのコールバック関数。
+ * @returns {JSX.Element} - ノイズの種類選択ドロップダウン。
+ */
 const NoiseList: React.FC<Props> = ({ noiseType, setNoiseType }) => {
   return (
     <select
