@@ -28,8 +28,9 @@ export type NoiseOptions = {
 type NoiseGenerator = (options: NoiseOptions) => Float32Array;
 
 /**
- * ホワイトノイズを生成する
- * 全ての周波数が均等に分布したランダムなノイズを生成します。
+ * ホワイトノイズを生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたホワイトノイズのデータ。
  */
 const generateWhiteNoise: NoiseGenerator = ({
   duration,
@@ -44,8 +45,9 @@ const generateWhiteNoise: NoiseGenerator = ({
 };
 
 /**
- * ピンクノイズを生成する
- * 低周波数がより強調された自然な音のノイズを生成します。
+ * ピンクノイズを生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたピンクノイズのデータ。
  */
 const generatePinkNoise: NoiseGenerator = ({
   duration,
@@ -72,8 +74,9 @@ const generatePinkNoise: NoiseGenerator = ({
 };
 
 /**
- * ブラウンノイズを生成する
- * さらに低周波数が強調された深い音のノイズを生成します。
+ * ブラウンノイズを生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたブラウンノイズのデータ。
  */
 const generateBrownNoise: NoiseGenerator = ({
   duration,
@@ -91,8 +94,9 @@ const generateBrownNoise: NoiseGenerator = ({
 };
 
 /**
- * パーリンノイズを生成する（簡略化バージョン）
- * 滑らかで自然な変化を持つノイズを生成します。
+ * パーリンノイズを生成します（簡略化バージョン）。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたパーリンノイズのデータ。
  */
 const generatePerlinNoise: NoiseGenerator = ({
   duration,
@@ -137,8 +141,9 @@ const generatePerlinNoise: NoiseGenerator = ({
 };
 
 /**
- * クラックルノイズを生成する
- * 不規則でパチパチとした音のノイズを生成します。
+ * クラックルノイズを生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたクラックルノイズのデータ。
  */
 const generateGlitchNoise: NoiseGenerator = ({
   duration,
@@ -181,7 +186,9 @@ const generateGlitchNoise: NoiseGenerator = ({
 const C0_FREQUENCY = 16.35 * 4;
 
 /**
- * 矩形波を生成する
+ * 矩形波を生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成された矩形波のデータ。
  */
 const generateSquareWave: NoiseGenerator = ({
   duration,
@@ -197,7 +204,9 @@ const generateSquareWave: NoiseGenerator = ({
 };
 
 /**
- * 正弦波を生成する
+ * パルス波を生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたパルス波のデータ。
  */
 const generatePulseWave: NoiseGenerator = ({
   duration,
@@ -219,7 +228,9 @@ const generatePulseWave: NoiseGenerator = ({
 };
 
 /**
- * ノコギリ波を生成する
+ * ノコギリ波を生成します。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたノコギリ波のデータ。
  */
 const generateSawtoothWave: NoiseGenerator = ({
   duration,
@@ -235,8 +246,11 @@ const generateSawtoothWave: NoiseGenerator = ({
 };
 
 /**
- * メインのノイズ生成関数
- * 指定されたタイプとオプションに基づいて適切なノイズを生成します。
+ * 指定されたタイプとオプションに基づいてノイズを生成します。
+ * @param {NoiseType} type - 生成するノイズの種類。
+ * @param {NoiseOptions} options - ノイズ生成のオプション。
+ * @returns {Float32Array} 生成されたノイズのデータ。
+ * @throws {Error} サポートされていないノイズタイプが指定された場合にエラーをスローします。
  */
 export const generateNoise = (
   type: NoiseType,

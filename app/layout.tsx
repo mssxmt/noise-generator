@@ -47,6 +47,13 @@ const exanRegular = localFont({
   variable: '--font-exan',
   display: 'swap',
 });
+
+/**
+ * アプリケーションのルートレイアウトコンポーネント。
+ * @param {Readonly<{ children: React.ReactNode }>} props - コンポーネントのプロパティ。
+ * @param {React.ReactNode} props.children - レイアウト内に表示する子要素。
+ * @returns {JSX.Element} - ルートレイアウト。
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

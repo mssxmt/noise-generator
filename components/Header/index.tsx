@@ -36,6 +36,13 @@ const Title = css`
   align-items: baseline;
   gap: 1rem;
 `;
+
+/**
+ * アプリケーションのヘッダーコンポーネント。
+ * @param {{ children?: React.ReactNode }} props - コンポーネントのプロパティ。
+ * @param {React.ReactNode} [props.children] - ヘッダー内に表示する子要素。
+ * @returns {JSX.Element} - ヘッダー。
+ */
 export const Header = ({ children }: { children?: React.ReactNode }) => {
   return (
     <header className={HeaderStyle}>

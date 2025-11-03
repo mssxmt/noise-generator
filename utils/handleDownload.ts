@@ -5,6 +5,10 @@ import {
   numberArrayToFloat32Array,
 } from '@/utils/wavfileGenerator';
 
+/**
+ * StoredNoiseの配列を受け取り、ZIPファイルとしてダウンロードする関数
+ * @param {DownloadManagerProps} props - ダウンロードするファイルの情報
+ */
 type DownloadManagerProps = {
   noiseFiles: StoredNoise[];
 };

@@ -20,6 +20,11 @@ const Section = css`
   gap: 20px;
   padding: 0 0 80px;
 `;
+
+/**
+ * アプリケーションのホームページコンポーネント。
+ * @returns {JSX.Element} - ホームページ。
+ */
 export default function Home() {
   return (
     <main className={Main}>

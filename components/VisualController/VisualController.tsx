@@ -96,6 +96,27 @@ type Props = {
   setSliceWidth: React.Dispatch<React.SetStateAction<number>>;
 };
 
+/**
+ * ビジュアライザーの表示を制御するためのコンポーネント。
+ * @param {Props} props - コンポーネントのプロパティ。
+ * @param {number} props.effectType - エフェクトの種類。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setEffectType - エフェクトの種類を設定する関数。
+ * @param {number} props.colorMode - カラーモード。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setColorMode - カラーモードを設定する関数。
+ * @param {number} props.wireframeMode - ワイヤーフレームモード。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setWireframeMode - ワイヤーフレームモードを設定する関数。
+ * @param {boolean} props.displayChecked - 表示がチェックされているか。
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setDiscplayChecked - 表示のチェック状態を設定する関数。
+ * @param {boolean} props.visualizerChangeChecked - ビジュアライザーの変更がチェックされているか。
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setVisualizerChangeChecked - ビジュアライザーの変更チェック状態を設定する関数。
+ * @param {string} props.strokeColor - 2D波形の色。
+ * @param {React.Dispatch<React.SetStateAction<string>>} props.setstrokeColor - 2D波形の色を設定する関数。
+ * @param {number} props.lineWidth - 2D波形の線の太さ。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setLineWidth - 2D波形の線の太さを設定する関数。
+ * @param {number} props.sliceWidth - 2D波形のスライスの幅。
+ * @param {React.Dispatch<React.SetStateAction<number>>} props.setSliceWidth - 2D波形のスライスの幅を設定する関数。
+ * @returns {JSX.Element} - ビジュアルコントローラー。
+ */
 export const VisualController = ({
   effectType,
   setEffectType,

@@ -14,6 +14,9 @@ export type StoredNoise = {
   createdAt: Date;
 };
 
+/**
+ * Dexie.jsを使用してノイズデータを格納するためのデータベースクラス。
+ */
 class NoiseDatabase extends Dexie {
   noises!: Dexie.Table<StoredNoise, string>;
 
@@ -29,6 +32,11 @@ const db = new NoiseDatabase();
 
 const MAX_STORED_NOISES = 16;
 
+/**
+ * ノイズデータをデータベースに保存します。
+ * @param {Omit<StoredNoise, 'id' | 'createdAt'>} noise - 保存するノイズデータ。
+ * @returns {Promise<StoredNoise>} 保存されたノイズデータ（IDと作成日時を含む）。
+ */
 export const saveNoise = async (
   noise: Omit<StoredNoise, 'id' | 'createdAt'>
 ): Promise<StoredNoise> => {
@@ -50,14 +58,27 @@ export const saveNoise = async (
   return { ...newNoise };
 };
 
+/**
+ * 保存されているすべてのノイズデータを取得します。
+ * @returns {Promise<StoredNoise[]>} 保存されているすべてのノイズデータの配列。
+ */
 export const getStoredNoises = async (): Promise<StoredNoise[]> => {
   return await db.noises.orderBy('createdAt').reverse().toArray();
 };
 
+/**
+ * 指定されたIDのノイズデータを削除します。
+ * @param {string} id - 削除するノイズデータのID。
+ * @returns {Promise<void>}
+ */
 export const deleteNoise = async (id: string): Promise<void> => {
   await db.noises.delete(id);
 };
 
+/**
+ * 保存されているすべてのノイズデータを削除します。
+ * @returns {Promise<void>}
+ */
 export const clearAllNoises = async (): Promise<void> => {
   await db.noises.clear();
 };
