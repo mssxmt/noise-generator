@@ -1,3 +1,4 @@
+import React from 'react';
 import { StoredNoise } from '@/utils/storageManager';
 import { css } from '@kuma-ui/core';
 import { IconRun } from '@tabler/icons-react';
@@ -78,7 +79,7 @@ type Props = {
  * @param {string} props.selectedId - 現在選択されているノイズのID。
  * @returns {JSX.Element} - 保存されたノイズのグリッドリスト。
  */
-export const SavedGridList = ({
+const SavedGridListComponent = ({
   storedNoises,
   handlePlayStored,
   handleDeleteNoise,
@@ -139,3 +140,5 @@ export const SavedGridList = ({
     </ul>
   );
 };
+
+export const SavedGridList = React.memo(SavedGridListComponent);

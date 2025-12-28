@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import { NoiseType } from '@/utils/noiseGenerators';
 import { ControlButtons } from '../ControlButtons/ControlButtons';
 import RangeInputComponent from '../Input/RangeInput';
 import NoiseList from '../NoiseList/NoiseList';
-import { useState } from 'react';
 import { css } from '@kuma-ui/core';
 
 const WrapperStyle = css`
@@ -111,7 +111,7 @@ type Props = {
  * @param {Props} props - コンポーネントのプロパティ。
  * @returns {JSX.Element} - サウンドコントローラー。
  */
-export const SoundController = ({
+const SoundControllerComponent = ({
   noiseType,
   setNoiseType,
   isPlaying,
@@ -180,3 +180,5 @@ export const SoundController = ({
     </div>
   );
 };
+
+export const SoundController = React.memo(SoundControllerComponent);

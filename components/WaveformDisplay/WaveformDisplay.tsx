@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useEffect, useState } from 'react';
 // import styles from './WaveformDisplay.css';
 
@@ -33,73 +35,81 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
   lineWidth,
   sliceWidth: SW,
 }) => {
-  // canvas 要素の参照を保持するための ref を作成
+  // Canvas element ref
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // AnalyserNode を保持するための state を作成
-  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
-  // アニメーションフレームの ID を保持するための state を作成
+
+  // Reuse AudioContext and AnalyserNode across renders
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+
+  // Animation frame ID ref
   const animationFrameId = useRef<number | null>(null);
 
-  // コンポーネントがマウント・アンマウントされた時に実行する処理
+  // Cache computed styles to avoid DOM access in animation loop
+  const [cachedStyles, setCachedStyles] = useState({ fillColor: '' });
+
+  // Initialize cached styles on mount (client-side only)
   useEffect(() => {
-    if (!canvasRef.current) return;
-    if (!audioData) return;
-    // canvas 要素の取得とコンテキストの作成
+    const rootStyles = getComputedStyle(document.documentElement);
+    setCachedStyles({
+      fillColor: rootStyles.getPropertyValue('--greyLight-1'),
+    });
+  }, []);
+
+  // Setup and draw waveform
+  useEffect(() => {
+    if (!canvasRef.current || !audioData) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // オーディオコンテキストの作成（ブラウザの互換性を考慮）
-    const context = new (window.AudioContext ||
-      (window as any).webkitAudioContext)();
-    const newAnalyser = context.createAnalyser();
-    newAnalyser.fftSize = 2048; // FFT サイズの設定
-    // setAnalyser(newAnalyser);
+    // Create AudioContext and AnalyserNode only once
+    if (!audioContextRef.current) {
+      const AudioContextClass = window.AudioContext ||
+        (window as any).webkitAudioContext;
+      audioContextRef.current = new AudioContextClass();
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      analyserRef.current.fftSize = 2048;
+    }
 
-    // オーディオバッファの作成とデータの設定
-    const buffer = context.createBuffer(
-      1,
-      audioData.length,
-      context.sampleRate
-    );
+    const audioCtx = audioContextRef.current;
+    const analyser = analyserRef.current;
+
+    if (!analyser) return;
+
+    // Create buffer from audio data
+    const buffer = audioCtx.createBuffer(1, audioData.length, audioCtx.sampleRate);
     buffer.getChannelData(0).set(audioData);
 
-    // バッファソースの作成
-    const source = context.createBufferSource();
+    // Create and configure source
+    const source = audioCtx.createBufferSource();
     source.buffer = buffer;
 
-    // ゲインノードの作成と音量の設定
-    const gainNode = context.createGain();
-    gainNode.gain.setValueAtTime(volume, context.currentTime);
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
 
-    // ノードをチェーン状に接続
     source.connect(gainNode);
-    gainNode.connect(newAnalyser);
-    // `context.destination` に接続しないことで音を鳴らさない
-    // newAnalyser.connect(context.destination);
+    gainNode.connect(analyser);
+    // Don't connect to destination to avoid playing sound
 
-    // オーディオソースの再生開始
     source.start();
 
-    // AnalyserNode のデータを格納する配列の作成
-    const bufferLength = newAnalyser.frequencyBinCount;
+    // Data array for analyzer
+    const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    // 描画関数の定義
+    // Draw function
     const draw = () => {
       const width = canvas.width;
       const height = canvas.height;
-      newAnalyser.getByteTimeDomainData(dataArray);
+      analyser.getByteTimeDomainData(dataArray);
 
-      const rootStyles = getComputedStyle(document.documentElement);
-      const fillColor = rootStyles.getPropertyValue('--greyLight-1');
-      // const strokeColor = rootStyles.getPropertyValue('--greyDark');
-
-      // canvas をクリア
-      ctx.fillStyle = fillColor;
+      // Use cached styles instead of accessing DOM
+      ctx.fillStyle = cachedStyles.fillColor;
       ctx.fillRect(0, 0, width, height);
 
-      // 波形を描画
+      // Draw waveform
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = strokeColor;
       ctx.beginPath();
@@ -123,25 +133,29 @@ const WaveformDisplay: React.FC<WaveformDisplayProps> = ({
       ctx.lineTo(canvas.width, canvas.height / 2);
       ctx.stroke();
 
-      // 次のフレームの描画をリクエスト
+      // Request next frame
       const newAnimationFrameId = requestAnimationFrame(draw);
       animationFrameId.current = newAnimationFrameId;
     };
 
     draw();
 
-    // クリーンアップ関数：アニメーションフレームのキャンセル、オーディオノードの解放
+    // Cleanup function
     return () => {
-      if (animationFrameId && animationFrameId.current) {
+      if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
       }
-      source.stop();
-      source.disconnect();
-      gainNode.disconnect();
-      newAnalyser.disconnect();
-      context.close();
+      try {
+        source.stop();
+        source.disconnect();
+        gainNode.disconnect();
+      } catch (e) {
+        // Source may already be stopped
+      }
+      // Don't close context - keep it alive for reuse
     };
-  }, [audioData, volume]);
+  }, [audioData, volume, lineWidth, strokeColor, SW, cachedStyles.fillColor]);
 
   // canvas 要素のレンダリング
   return (

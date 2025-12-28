@@ -1,3 +1,4 @@
+import React from 'react';
 import { StoredNoise } from '@/utils/storageManager';
 import { css } from '@kuma-ui/core';
 import {
@@ -105,7 +106,7 @@ type Props = {
  * @param {string} props.selectedId - 現在選択されているノイズのID。
  * @returns {JSX.Element} - 保存されたノイズのリスト。
  */
-export const SavedList = ({
+const SavedListComponent = ({
   storedNoises,
   handlePlayStored,
   handleDeleteNoise,
@@ -152,3 +153,5 @@ export const SavedList = ({
     </ul>
   );
 };
+
+export const SavedList = React.memo(SavedListComponent);

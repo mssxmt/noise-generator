@@ -63,6 +63,9 @@ export const Generator: React.FC = () => {
   const [lineWidth, setLineWidth] = useState(0.5);
   const [sliceWidth, setSliceWidth] = useState(1);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  // Keep ref to latest storedNoises for callbacks without re-creating them
+  const storedNoisesRef = useRef<StoredNoise[]>([]);
+  storedNoisesRef.current = storedNoises;
 
   const loadInitialStoredNoises = async () => {
     const initialStoredNoises = await getStoredNoises();
@@ -101,13 +104,16 @@ export const Generator: React.FC = () => {
           options,
           data: Array.from(noiseData), // Float32Arrayを通常の配列に変換
         });
-        // stateの配列に加える
-        if (storedNoises.length <= 16) {
-          setStoredNoises((prevNoises) => [...prevNoises, savedNoise]);
-        }
+        // 機能的state更新でstoredNoises.lengthへの依存を削除
+        setStoredNoises((prevNoises) => {
+          if (prevNoises.length <= 16) {
+            return [...prevNoises, savedNoise];
+          }
+          return prevNoises;
+        });
       }
     },
-    [duration, volume, noiseType, storedNoises.length]
+    [duration, volume, noiseType]
   );
 
   const handleStop = useCallback(() => {
@@ -118,10 +124,12 @@ export const Generator: React.FC = () => {
   const handleDeleteNoise = useCallback(
     async (id: string) => {
       await deleteNoise(id);
-      const updatedNoises = storedNoises.filter((noise) => noise.id !== id);
-      setStoredNoises(updatedNoises);
+      // Use functional update to avoid dependency on storedNoises
+      setStoredNoises((prevNoises) =>
+        prevNoises.filter((noise) => noise.id !== id)
+      );
     },
-    [storedNoises]
+    []
   );
 
   const handlePlayStored = useCallback((noise: StoredNoise) => {
@@ -143,11 +151,12 @@ export const Generator: React.FC = () => {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       const index = keyMapping.indexOf(event.key.toLowerCase());
-      if (index !== -1 && index < storedNoises.length) {
-        handlePlayStored(storedNoises[index]);
+      const currentNoises = storedNoisesRef.current;
+      if (index !== -1 && index < currentNoises.length) {
+        handlePlayStored(currentNoises[index]);
       }
     },
-    [handlePlayStored, storedNoises]
+    [handlePlayStored]
   );
 
   useEffect(() => {
