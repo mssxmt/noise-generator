@@ -99,16 +99,15 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     dataArrayRef.current = new Uint8Array(analyserNode.frequencyBinCount);
 
     return () => {
-      // Only stop and disconnect, don't close the context
-      if (sourceRef.current) {
-        try {
-          sourceRef.current.stop();
-          sourceRef.current.disconnect();
-        } catch (e) {
-          // Source may already be stopped
-        }
-        sourceRef.current = null;
+      // Stop and disconnect nodes, but don't close the context for reuse
+      try {
+        source.stop();
+        source.disconnect();
+        gainNode.disconnect();
+      } catch (e) {
+        // Source may already be stopped or disconnected
       }
+      sourceRef.current = null;
     };
   }, [audioData, sampleRate, volume]);
 
@@ -121,11 +120,8 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     // Update time uniform
     uniforms.u_time.value = state.clock.elapsedTime;
 
-    // Reuse Float32Array instead of creating new one
-    const dataArr = dataArrayRef.current;
-    for (let i = 0; i < dataArr.length; i++) {
-      uniforms.u_data_arr.value[i] = dataArr[i];
-    }
+    // Use the more performant set() method for TypedArray copy
+    uniforms.u_data_arr.value.set(dataArrayRef.current);
 
     // Update effect and color uniforms only when changed
     if (uniforms.u_effect_type.value !== effectType) {

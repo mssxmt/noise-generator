@@ -106,7 +106,7 @@ export const Generator: React.FC = () => {
         });
         // 機能的state更新でstoredNoises.lengthへの依存を削除
         setStoredNoises((prevNoises) => {
-          if (prevNoises.length <= 16) {
+          if (prevNoises.length < 16) {
             return [...prevNoises, savedNoise];
           }
           return prevNoises;
