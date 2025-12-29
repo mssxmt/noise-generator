@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import { IconCube, IconPerspective } from '@tabler/icons-react';
 import RadioInput from '../Input/RadioInput';
 import { ToggleSwitch } from '../ToggleSwitchComponent';
 import { css } from '@kuma-ui/core';
-import { useState } from 'react';
 import ColorInput from '../Input/ColorInput';
 import RangeInputComponent from '../Input/RangeInput';
 
@@ -101,7 +101,7 @@ type Props = {
  * @param {Props} props - コンポーネントのプロパティ。
  * @returns {JSX.Element} - ビジュアルコントローラー。
  */
-export const VisualController = ({
+const VisualControllerComponent = ({
   effectType,
   setEffectType,
   colorMode,
@@ -258,3 +258,5 @@ export const VisualController = ({
     </div>
   );
 };
+
+export const VisualController = React.memo(VisualControllerComponent);

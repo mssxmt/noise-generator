@@ -1,3 +1,4 @@
+import React from 'react';
 import { clearAllNoises, StoredNoise } from '@/utils/storageManager';
 import { css } from '@kuma-ui/core';
 import { IconTrash } from '@tabler/icons-react';
@@ -62,7 +63,7 @@ type Props = {
  * @param {(StoredNoise: StoredNoise[]) => void} props.setStoredNoises - 保存されているノイズの配列を更新する関数。
  * @returns {JSX.Element | false} - すべて削除ボタン。ノイズが保存されていない場合はfalse。
  */
-export const DeleteAll = ({ setStoredNoises, storedNoises }: Props) => {
+const DeleteAllComponent = ({ setStoredNoises, storedNoises }: Props) => {
   return (
     storedNoises.length !== 0 && (
       <button
@@ -82,3 +83,5 @@ export const DeleteAll = ({ setStoredNoises, storedNoises }: Props) => {
     )
   );
 };
+
+export const DeleteAll = React.memo(DeleteAllComponent);

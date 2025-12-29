@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -42,75 +42,92 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
   const meshRef = useRef<THREE.Mesh>(null);
   const { scene } = useThree();
 
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
-  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
+  // Reuse AudioContext and AnalyserNode across renders
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
   const dataArrayRef = useRef<Uint8Array | null>(null);
-
   const sourceRef = useRef<AudioBufferSourceNode | null>(null);
-  const [uniforms] = useState({
-    u_time: { value: 0 },
-    u_amplitude: { value: 3.0 },
-    u_data_arr: { value: new Float32Array(128) },
-    u_effect_type: { value: effectType },
-    u_color_mode: { value: colorMode },
-  });
+
+  // Memoize uniforms to avoid recreation
+  const uniforms = useMemo(
+    () => ({
+      u_time: { value: 0 },
+      u_amplitude: { value: 3.0 },
+      u_data_arr: { value: new Float32Array(128) },
+      u_effect_type: { value: effectType },
+      u_color_mode: { value: colorMode },
+    }),
+    [effectType, colorMode]
+  );
 
   useEffect(() => {
-    // オーディオコンテキストのセットアップ
-    const setupAudioContext = () => {
-      if (!audioData) {
-        return;
-      }
-      const audioCtx = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-      const analyserNode = audioCtx.createAnalyser();
-      analyserNode.fftSize = 256;
+    if (!audioData) {
+      return;
+    }
 
-      const buffer = audioCtx.createBuffer(1, audioData.length, sampleRate);
-      buffer.getChannelData(0).set(audioData);
+    // Create AudioContext and AnalyserNode only once
+    if (!audioContextRef.current) {
+      const AudioContextClass = window.AudioContext ||
+        (window as any).webkitAudioContext;
+      audioContextRef.current = new AudioContextClass();
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      analyserRef.current.fftSize = 256;
+    }
 
-      const source = audioCtx.createBufferSource();
-      source.buffer = buffer;
+    const audioCtx = audioContextRef.current;
+    const analyserNode = analyserRef.current;
 
-      const gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+    if (!analyserNode) return;
 
-      source.connect(gainNode);
-      gainNode.connect(analyserNode);
-      // `context.destination` に接続しないことで音を鳴らさない
-      // analyserNode.connect(audioCtx.destination);
+    // Create buffer from audio data
+    const buffer = audioCtx.createBuffer(1, audioData.length, sampleRate);
+    buffer.getChannelData(0).set(audioData);
 
-      source.start();
-      sourceRef.current = source;
-      setAudioContext(audioCtx);
-      setAnalyser(analyserNode);
-      dataArrayRef.current = new Uint8Array(analyserNode.frequencyBinCount);
-    };
+    // Create and configure source
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
 
-    setupAudioContext();
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+
+    source.connect(gainNode);
+    gainNode.connect(analyserNode);
+    // Don't connect to destination to avoid playing sound
+
+    source.start();
+    sourceRef.current = source;
+    dataArrayRef.current = new Uint8Array(analyserNode.frequencyBinCount);
 
     return () => {
-      if (dataArrayRef.current) {
-        dataArrayRef.current = null;
+      // Stop and disconnect nodes, but don't close the context for reuse
+      try {
+        source.stop();
+        source.disconnect();
+        gainNode.disconnect();
+      } catch (e) {
+        // Source may already be stopped or disconnected
       }
-      if (sourceRef.current) {
-        sourceRef.current.stop();
-        sourceRef.current.disconnect();
-      }
-      if (audioContext) {
-        audioContext.close();
-      }
+      sourceRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioData, sampleRate, volume]);
 
   useFrame((state) => {
-    if (analyser && dataArrayRef.current) {
-      analyser.getByteFrequencyData(dataArrayRef.current);
-      uniforms.u_time.value = state.clock.elapsedTime;
-      uniforms.u_data_arr.value = new Float32Array(dataArrayRef.current);
-      // uniforms を更新して再描画
+    const analyser = analyserRef.current;
+    if (!analyser || !dataArrayRef.current) return;
+
+    analyser.getByteFrequencyData(dataArrayRef.current);
+
+    // Update time uniform
+    uniforms.u_time.value = state.clock.elapsedTime;
+
+    // Use the more performant set() method for TypedArray copy
+    uniforms.u_data_arr.value.set(dataArrayRef.current);
+
+    // Update effect and color uniforms only when changed
+    if (uniforms.u_effect_type.value !== effectType) {
       uniforms.u_effect_type.value = effectType;
+    }
+    if (uniforms.u_color_mode.value !== colorMode) {
       uniforms.u_color_mode.value = colorMode;
     }
   });
