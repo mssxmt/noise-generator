@@ -22,7 +22,7 @@ export const createZip = async (
  * @param {Blob} zipBlob - ダウンロードするZIPファイルのBlob。
  * @param {string} fileName - ダウンロードするファイルの名前。
  */
-export const downloadZip = (zipBlob: Blob, fileName:string) => {
+export const downloadZip = (zipBlob: Blob, fileName: string) => {
   const link = document.createElement('a');
   link.href = URL.createObjectURL(zipBlob);
   link.download = fileName;

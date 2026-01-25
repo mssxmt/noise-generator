@@ -25,7 +25,7 @@
 
 1. **リポジトリのクローン:**
    ```bash
-   git clone https://github.com/your-username/noise-generator.git
+   git clone <このリポジトリのURL>
    cd noise-generator
    ```
 
